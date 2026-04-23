@@ -1,65 +1,176 @@
-import Image from "next/image";
+import React from 'react';
+import Link from 'next/link';
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+/**
+ * Landing page — demonstrates Edge-OG with a live API call, architecture overview,
+ * caching layer explanation, and quick-start snippet.
+ */
+export default function HomePage(): React.ReactElement {
+    const demoUrl =
+        '/api/og?template=blog-card&title=Edge-OG%3A+Dynamic+OG+Images+at+the+Edge&author=You&tag=Open+Graph&siteUrl=edge-og.vercel.app&accentColor=%236366f1';
+
+    return (
+        <div className="min-h-screen bg-slate-950 text-white">
+            {/* Nav */}
+            <nav className="border-b border-slate-800 px-6 py-4">
+                <div className="max-w-screen-xl mx-auto flex justify-between items-center">
+                    <span className="font-bold text-lg tracking-tight">Edge-OG</span>
+                    <Link
+                        href="/playground"
+                        className="bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-sm font-medium px-4 py-2 rounded-md"
+                    >
+                        Open Playground →
+                    </Link>
+                </div>
+            </nav>
+
+            <main className="max-w-screen-xl mx-auto px-6 py-20 flex flex-col gap-24">
+                {/* Hero */}
+                <section className="flex flex-col items-center text-center gap-6">
+                    <div className="inline-flex items-center gap-2 bg-indigo-950 border border-indigo-800 rounded-full px-4 py-1.5 text-indigo-300 text-sm">
+                        ⚡ Runs on Vercel Edge Functions
+                    </div>
+                    <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl">
+                        Dynamic OG images,{' '}
+                        <span className="text-indigo-400">generated at the edge</span>
+                    </h1>
+                    <p className="text-xl text-slate-400 max-w-xl">
+                        No headless browser. No third-party service. Just a URL — and your social cards
+                        appear instantly, cached globally.
+                    </p>
+                    <div className="flex gap-4 flex-wrap justify-center">
+                        <Link
+                            href="/playground"
+                            className="bg-indigo-600 hover:bg-indigo-500 transition-colors text-white font-semibold px-6 py-3 rounded-lg text-base"
+                        >
+                            Open Playground
+                        </Link>
+                        <a
+                            href="/api/og?template=blog-card&title=Hello+World"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="border border-slate-700 hover:border-slate-500 transition-colors text-slate-300 hover:text-white font-semibold px-6 py-3 rounded-lg text-base"
+                        >
+                            Try the API
+                        </a>
+                    </div>
+                </section>
+
+                {/* Live demo */}
+                <section className="flex flex-col gap-6 items-center">
+                    <h2 className="text-2xl font-bold text-center">Live API Demo</h2>
+                    <p className="text-slate-400 text-sm text-center">
+                        This image is generated by{' '}
+                        <code className="text-indigo-300 font-mono bg-slate-900 px-1.5 py-0.5 rounded">
+                            /api/og
+                        </code>{' '}
+                        — a real Edge Function call.
+                    </p>
+                    <div className="w-full max-w-3xl border border-slate-700 rounded-xl overflow-hidden shadow-2xl">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src={demoUrl}
+                            alt="Live OG card demo"
+                            className="w-full h-auto"
+                            style={{ aspectRatio: '1200/630' }}
+                        />
+                    </div>
+                </section>
+
+                {/* Architecture diagram */}
+                <section className="flex flex-col gap-8">
+                    <h2 className="text-2xl font-bold text-center">How It Works</h2>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        {[
+                            { label: 'JSX Template', sub: 'Define your card in React' },
+                            { label: 'Satori', sub: 'JSX → SVG' },
+                            { label: 'resvg-wasm', sub: 'SVG → PNG' },
+                        ].map((box, i, arr) => (
+                            <React.Fragment key={box.label}>
+                                <div className="flex flex-col items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-8 py-6 min-w-[160px] text-center">
+                                    <span className="font-semibold text-white">{box.label}</span>
+                                    <span className="text-xs text-slate-500">{box.sub}</span>
+                                </div>
+                                {i < arr.length - 1 && (
+                                    <span className="text-slate-600 text-2xl hidden sm:block">→</span>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Caching layers */}
+                <section className="flex flex-col gap-8">
+                    <h2 className="text-2xl font-bold text-center">Two-Layer Cache</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {[
+                            {
+                                step: '1',
+                                title: 'Vercel CDN',
+                                desc: 'Cache-Control headers instruct Vercel to serve identical requests globally without hitting the edge function.',
+                            },
+                            {
+                                step: '2',
+                                title: 'Upstash Redis',
+                                desc: 'Edge-compatible Redis stores generated PNGs as base64 with a 48-hour TTL. Cold starts regenerate automatically.',
+                            },
+                            {
+                                step: '3',
+                                title: 'WASM Singleton',
+                                desc: 'resvg-wasm initialises once per edge worker lifetime — subsequent renders skip the 2s compile cost.',
+                            },
+                        ].map((layer) => (
+                            <div
+                                key={layer.step}
+                                className="bg-slate-900 border border-slate-700 rounded-xl p-6 flex flex-col gap-3"
+                            >
+                                <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-sm font-bold shrink-0">
+                                    {layer.step}
+                                </div>
+                                <h3 className="font-semibold text-white">{layer.title}</h3>
+                                <p className="text-sm text-slate-400 leading-relaxed">{layer.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Quick start */}
+                <section className="flex flex-col gap-6 items-center">
+                    <h2 className="text-2xl font-bold text-center">Quick Start</h2>
+                    <p className="text-slate-400 text-sm text-center max-w-lg">
+                        Add one{' '}
+                        <code className="text-indigo-300 font-mono bg-slate-900 px-1.5 py-0.5 rounded">
+                            {'<meta>'}
+                        </code>{' '}
+                        tag to your page. That's it.
+                    </p>
+                    <pre className="bg-slate-900 border border-slate-700 rounded-xl p-6 text-sm font-mono text-slate-300 overflow-x-auto w-full max-w-2xl leading-relaxed">
+                        <code>{`<!-- In your <head> -->
+<meta
+  property="og:image"
+  content="https://your-app.vercel.app/api/og
+    ?template=blog-card
+    &title=My+Post+Title
+    &author=Jane+Doe
+    &tag=Tutorial"
+/>`}</code>
+                    </pre>
+                    <Link
+                        href="/playground"
+                        className="bg-indigo-600 hover:bg-indigo-500 transition-colors text-white font-semibold px-6 py-3 rounded-lg"
+                    >
+                        Build your card in the Playground →
+                    </Link>
+                </section>
+            </main>
+
+            {/* Footer */}
+            <footer className="border-t border-slate-800 px-6 py-8 mt-12">
+                <div className="max-w-screen-xl mx-auto flex justify-between items-center text-sm text-slate-500">
+                    <span>Edge-OG — Dynamic Social Card Generator</span>
+                    <span>Built with Next.js, Satori, resvg-wasm</span>
+                </div>
+            </footer>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    );
 }
