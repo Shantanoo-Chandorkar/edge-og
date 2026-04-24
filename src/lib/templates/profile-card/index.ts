@@ -11,7 +11,7 @@ export const profileCardTemplate: TemplateDefinition = {
             key: 'name',
             label: 'Name',
             type: 'text',
-            required: true,
+            required: false,
             description: 'Full name to display',
             defaultValue: 'Jane Doe',
         },

@@ -11,7 +11,7 @@ export const blogCardTemplate: TemplateDefinition = {
             key: 'title',
             label: 'Title',
             type: 'text',
-            required: true,
+            required: false,
             description: 'The main blog post title',
             defaultValue: 'My Blog Post',
         },

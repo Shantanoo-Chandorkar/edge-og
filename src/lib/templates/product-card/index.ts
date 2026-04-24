@@ -11,7 +11,7 @@ export const productCardTemplate: TemplateDefinition = {
             key: 'productName',
             label: 'Product Name',
             type: 'text',
-            required: true,
+            required: false,
             description: 'The product or project name',
             defaultValue: 'My Product',
         },
