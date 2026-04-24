@@ -15,12 +15,20 @@ export default function HomePage(): React.ReactElement {
             <nav className="border-b border-slate-800 px-6 py-4">
                 <div className="max-w-screen-xl mx-auto flex justify-between items-center">
                     <span className="font-bold text-lg tracking-tight">Edge-OG</span>
-                    <Link
-                        href="/playground"
-                        className="bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-sm font-medium px-4 py-2 rounded-md"
-                    >
-                        Open Playground →
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <Link
+                            href="/use-cases"
+                            className="text-slate-400 hover:text-white transition-colors text-sm font-medium px-4 py-2"
+                        >
+                            Use Cases
+                        </Link>
+                        <Link
+                            href="/playground"
+                            className="bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-sm font-medium px-4 py-2 rounded-md"
+                        >
+                            Open Playground →
+                        </Link>
+                    </div>
                 </div>
             </nav>
 
