@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
 /**
- * Landing page — demonstrates Edge-OG with a live API call, architecture overview,
+ * Landing page, demonstrates Edge-OG with a live API call, architecture overview,
  * caching layer explanation, and quick-start snippet.
  */
 export default function HomePage(): React.ReactElement {
@@ -25,7 +25,7 @@ export default function HomePage(): React.ReactElement {
                         <span className="text-indigo-400">generated at the edge</span>
                     </h1>
                     <p className="text-xl text-slate-400 max-w-xl">
-                        No headless browser. No third-party service. Just a URL — and your social cards
+                        No headless browser. No third-party service. Just a URL, and your social cards
                         appear instantly, cached globally.
                     </p>
                     <div className="flex gap-4 flex-wrap justify-center">
@@ -54,7 +54,7 @@ export default function HomePage(): React.ReactElement {
                         <code className="text-indigo-300 font-mono bg-slate-900 px-1.5 py-0.5 rounded">
                             /api/og
                         </code>{' '}
-                        — a real Edge Function call.
+                       , a real Edge Function call.
                     </p>
                     <div className="w-full max-w-3xl border border-slate-700 rounded-xl overflow-hidden shadow-2xl">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -107,7 +107,7 @@ export default function HomePage(): React.ReactElement {
                             {
                                 step: '3',
                                 title: 'WASM Singleton',
-                                desc: 'resvg-wasm initialises once per edge worker lifetime — subsequent renders skip the 2s compile cost.',
+                                desc: 'resvg-wasm initialises once per edge worker lifetime, subsequent renders skip the 2s compile cost.',
                             },
                         ].map((layer) => (
                             <div
@@ -157,7 +157,7 @@ export default function HomePage(): React.ReactElement {
             {/* Footer */}
             <footer className="border-t border-slate-800 px-6 py-8 mt-12">
                 <div className="max-w-screen-xl mx-auto flex justify-between items-center text-sm text-slate-500">
-                    <span>Edge-OG — Dynamic Social Card Generator</span>
+                    <span>Edge-OG, Dynamic Social Card Generator</span>
                     <span>Built with Next.js, Satori, resvg-wasm</span>
                 </div>
             </footer>

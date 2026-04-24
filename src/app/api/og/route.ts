@@ -5,7 +5,7 @@ import { getCachedImage, setCachedImage } from '@/lib/og/cache';
 import { renderTemplate } from '@/lib/og/renderer';
 import { OgQueryParams } from '@/types/og';
 
-// Node.js runtime — required for resvg-wasm. The WASM binary takes ~2s to
+// Node.js runtime, required for resvg-wasm. The WASM binary takes ~2s to
 // compile on cold start; the Node.js module cache keeps it alive across
 // requests within the same worker lifetime. Edge runtime re-compiles the
 // WASM on every cold start (which in dev happens per-request), making the
@@ -72,11 +72,11 @@ export async function GET(request: NextRequest): Promise<Response> {
             });
         }
     } catch {
-        // Cache read failure is non-fatal — fall through to generation
+        // Cache read failure is non-fatal, fall through to generation
     }
 
     // Build resolved props from whatever params were provided.
-    // No required-field enforcement and no default-value fallback — an empty or
+    // No required-field enforcement and no default-value fallback, an empty or
     // absent field is intentional. Templates conditionally render each element,
     // so omitting all fields produces a clean blank background.
     const resolvedProps: Record<string, string> = {};
@@ -106,7 +106,7 @@ export async function GET(request: NextRequest): Promise<Response> {
         );
     }
 
-    // Populate cache asynchronously — do not block the response
+    // Populate cache asynchronously, do not block the response
     setCachedImage(cacheKey, png).catch((error) => {
         console.error('Cache write failed (non-fatal):', error);
     });

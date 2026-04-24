@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
  *
  * The logo links back to home on every page except home itself, where it
  * renders as plain text to avoid a self-referencing link. Nav items for the
- * current page are hidden — there is no value in linking to the page you are
+ * current page are hidden, there is no value in linking to the page you are
  * already on.
  */
 export default function Navbar(): React.ReactElement {

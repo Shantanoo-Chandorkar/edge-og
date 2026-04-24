@@ -9,11 +9,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: 'Edge-OG — Dynamic Social Card Generator',
+    title: 'Edge-OG, Dynamic Social Card Generator',
     description:
         'Generate dynamic Open Graph social card images at the edge using Satori and resvg-wasm. No headless browser required.',
     openGraph: {
-        title: 'Edge-OG — Dynamic Social Card Generator',
+        title: 'Edge-OG, Dynamic Social Card Generator',
         description: 'Generate dynamic OG images at the edge.',
         type: 'website',
     },

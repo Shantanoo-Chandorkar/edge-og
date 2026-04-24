@@ -13,7 +13,7 @@ export async function getCachedImage(key: string): Promise<Uint8Array | null> {
         const buffer = Buffer.from(cached, 'base64');
         return new Uint8Array(buffer);
     } catch {
-        // Cache failure is non-fatal — fall through to generation
+        // Cache failure is non-fatal, fall through to generation
         return null;
     }
 }
@@ -27,6 +27,6 @@ export async function getCachedImage(key: string): Promise<Uint8Array | null> {
  */
 export async function setCachedImage(key: string, png: Uint8Array): Promise<void> {
     const base64 = Buffer.from(png).toString('base64');
-    // 48 hours TTL — never omit to prevent cache from growing unbounded
+    // 48 hours TTL, never omit to prevent cache from growing unbounded
     await redis.set(key, base64, { ex: 172800 });
 }

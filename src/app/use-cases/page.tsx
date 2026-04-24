@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import UseCasesTabs from '@/components/use-cases/UseCasesTabs';
 
 /**
- * Use Cases page — explains the three primary integration scenarios for Edge-OG.
+ * Use Cases page, explains the three primary integration scenarios for Edge-OG.
  * Intended for developers evaluating or cloning this project locally.
  */
 export default function UseCasesPage(): React.ReactElement {
@@ -53,7 +53,7 @@ export default function UseCasesPage(): React.ReactElement {
                         <p className="text-sm text-slate-400 leading-relaxed">
                             One JSX template serves every page. The image does not exist until
                             a social crawler requests it. It is then compiled, cached at the
-                            edge, and served globally — with zero designer involvement and no
+                            edge, and served globally, with zero designer involvement and no
                             repository overhead.
                         </p>
                     </div>
@@ -75,7 +75,7 @@ export default function UseCasesPage(): React.ReactElement {
             {/* Footer */}
             <footer className="border-t border-slate-800 px-6 py-8 mt-12">
                 <div className="max-w-screen-xl mx-auto flex justify-between items-center text-sm text-slate-500">
-                    <span>Edge-OG — Dynamic Social Card Generator</span>
+                    <span>Edge-OG, Dynamic Social Card Generator</span>
                     <span>Built with Next.js, Satori, resvg-wasm</span>
                 </div>
             </footer>

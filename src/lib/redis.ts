@@ -1,6 +1,6 @@
 import { Redis } from '@upstash/redis';
 
-// Singleton Upstash Redis client — safe for edge function reuse
+// Singleton Upstash Redis client, safe for edge function reuse
 export const redis = new Redis({
     url: process.env.UPSTASH_REDIS_REST_URL!,
     token: process.env.UPSTASH_REDIS_REST_TOKEN!,

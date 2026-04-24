@@ -13,7 +13,7 @@ interface BlogCardProps {
 /**
  * Blog card template for Satori rendering.
  * Dark background with large title, author info, and metadata chips.
- * All elements are conditionally rendered — omitting a prop hides that element.
+ * All elements are conditionally rendered, omitting a prop hides that element.
  *
  * @param props - Blog card visual properties
  */

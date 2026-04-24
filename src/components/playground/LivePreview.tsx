@@ -23,7 +23,7 @@ export function LivePreview({
 }: LivePreviewProps): React.ReactElement {
     // Start empty so the first effect always triggers a real URL change.
     // If initialized to apiUrl, the effect fires 150ms later with the same
-    // string — React bails out, <img> src never changes, onLoad never fires,
+    // string, React bails out, <img> src never changes, onLoad never fires,
     // and the spinner gets stuck on first mount.
     const [displayedUrl, setDisplayedUrl] = useState('');
     const [loading, setLoading] = useState(true);

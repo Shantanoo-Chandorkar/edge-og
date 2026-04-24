@@ -71,7 +71,7 @@ function BloggingTab(): React.ReactElement {
                 <p className="text-slate-400 leading-relaxed">
                     Instead of producing a graphic for every new article, configure your routing
                     layout to inject per-post variables directly into the API URL. The image does
-                    not exist until the moment a social media crawler requests it — at which point
+                    not exist until the moment a social media crawler requests it, at which point
                     the Satori/WASM pipeline compiles your template, caches it in Upstash Redis,
                     and returns a fully branded PNG containing the exact title, author, and read
                     time.
@@ -111,7 +111,7 @@ function BloggingTab(): React.ReactElement {
                 <p className="text-sm text-slate-400 leading-relaxed">
                     A blogging platform with 500 posts would require 500 individually designed
                     PNGs. With Edge-OG, one JSX template serves all of them. Publish a new
-                    post and its social card exists automatically — no designer intervention,
+                    post and its social card exists automatically, no designer intervention,
                     no repository bloat.
                 </p>
             </div>
@@ -128,7 +128,7 @@ function ECommerceTab(): React.ReactElement {
                 </h2>
                 <p className="text-slate-400 leading-relaxed">
                     Storefronts require highly convertible social links. Pass dynamic product
-                    state — name, price, availability — to the API as query parameters. When
+                    state, name, price, availability, to the API as query parameters. When
                     the price changes in your database, update the URL parameters. The next
                     share generates a fresh image reflecting the new state, bypassing any
                     stale cached version.
@@ -156,7 +156,7 @@ function ECommerceTab(): React.ReactElement {
                 <h3 className="text-sm font-semibold text-white">Cache invalidation by URL design</h3>
                 <p className="text-sm text-slate-400 leading-relaxed">
                     The cache key is a SHA-256 hash of the full query string. Changing any
-                    parameter — price, stock status, discount label — produces a different
+                    parameter, price, stock status, discount label, produces a different
                     cache key. The old image expires naturally via the 48-hour TTL. The new
                     URL generates a fresh card on first request. No manual cache purge needed.
                 </p>
@@ -167,7 +167,7 @@ function ECommerceTab(): React.ReactElement {
                 <p className="text-sm text-slate-400 leading-relaxed">
                     A product card that shows the real price and live stock status performs
                     better than a generic brand banner. The link preview becomes a micro
-                    advertisement — dynamically generated, always accurate, zero ongoing effort.
+                    advertisement, dynamically generated, always accurate, zero ongoing effort.
                 </p>
             </div>
         </div>
@@ -185,7 +185,7 @@ function MonitoringTab(): React.ReactElement {
                     When developers share debugging sessions, network payloads, or incident
                     summaries via Slack or Discord, those messages become meaningless text
                     walls. Edge-OG can render a structured visual summary of any payload as a
-                    shareable image — turning a raw JSON blob into a readable, on-brand card
+                    shareable image, turning a raw JSON blob into a readable, on-brand card
                     that communicates immediately.
                 </p>
             </div>
@@ -212,7 +212,7 @@ function MonitoringTab(): React.ReactElement {
                     <li>An automated alert fires for a failed webhook or degraded endpoint.</li>
                     <li>Your monitoring tool builds an Edge-OG URL encoding the incident summary as query params.</li>
                     <li>The Slack or Discord notification includes that URL as an <code className="text-indigo-300 font-mono">og:image</code>.</li>
-                    <li>On-call engineers see a structured visual card — endpoint, status code, severity — without opening a dashboard.</li>
+                    <li>On-call engineers see a structured visual card, endpoint, status code, severity, without opening a dashboard.</li>
                 </ol>
             </div>
 
@@ -224,7 +224,7 @@ function MonitoringTab(): React.ReactElement {
                     fields like <code className="font-mono text-indigo-300">endpoint</code>,{' '}
                     <code className="font-mono text-indigo-300">statusCode</code>, and{' '}
                     <code className="font-mono text-indigo-300">severity</code>. Your JSX
-                    template can apply colour coding — red for 5xx, yellow for 4xx — and
+                    template can apply colour coding, red for 5xx, yellow for 4xx, and
                     render structured data cleanly without any additional infrastructure.
                 </p>
             </div>
