@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 
 /**
  * Landing page — demonstrates Edge-OG with a live API call, architecture overview,
@@ -11,26 +12,7 @@ export default function HomePage(): React.ReactElement {
 
     return (
         <div className="min-h-screen bg-slate-950 text-white">
-            {/* Nav */}
-            <nav className="border-b border-slate-800 px-6 py-4">
-                <div className="max-w-screen-xl mx-auto flex justify-between items-center">
-                    <span className="font-bold text-lg tracking-tight">Edge-OG</span>
-                    <div className="flex items-center gap-3">
-                        <Link
-                            href="/use-cases"
-                            className="text-slate-400 hover:text-white transition-colors text-sm font-medium px-4 py-2"
-                        >
-                            Use Cases
-                        </Link>
-                        <Link
-                            href="/playground"
-                            className="bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-sm font-medium px-4 py-2 rounded-md"
-                        >
-                            Open Playground →
-                        </Link>
-                    </div>
-                </div>
-            </nav>
+            <Navbar />
 
             <main className="max-w-screen-xl mx-auto px-6 py-20 flex flex-col gap-24">
                 {/* Hero */}

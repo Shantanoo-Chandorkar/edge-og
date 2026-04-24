@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 import UseCasesTabs from '@/components/use-cases/UseCasesTabs';
 
 /**
@@ -9,20 +9,7 @@ import UseCasesTabs from '@/components/use-cases/UseCasesTabs';
 export default function UseCasesPage(): React.ReactElement {
     return (
         <div className="min-h-screen bg-slate-950 text-white">
-            {/* Nav */}
-            <nav className="border-b border-slate-800 px-6 py-4">
-                <div className="max-w-screen-xl mx-auto flex justify-between items-center">
-                    <Link href="/" className="font-bold text-lg tracking-tight hover:text-indigo-300 transition-colors">
-                        Edge-OG
-                    </Link>
-                    <Link
-                        href="/playground"
-                        className="bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-sm font-medium px-4 py-2 rounded-md"
-                    >
-                        Open Playground →
-                    </Link>
-                </div>
-            </nav>
+            <Navbar />
 
             <main className="max-w-screen-xl mx-auto px-6 py-16 flex flex-col gap-12">
                 {/* Header */}

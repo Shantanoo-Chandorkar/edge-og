@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
+import Navbar from '@/components/Navbar';
 import { SerializableTemplate } from '@/lib/templates/types';
 import { TemplateSelector } from './TemplateSelector';
 import { ParamEditor } from './ParamEditor';
@@ -65,6 +66,7 @@ export function Playground({ templates, baseUrl }: PlaygroundProps): React.React
 
     return (
         <div className="min-h-screen bg-slate-950 text-white">
+            <Navbar />
             <div className="max-w-screen-xl mx-auto px-6 py-8">
                 <div className="mb-8">
                     <h1 className="text-2xl font-bold text-white">OG Card Playground</h1>
