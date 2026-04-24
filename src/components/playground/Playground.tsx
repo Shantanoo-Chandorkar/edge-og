@@ -6,8 +6,6 @@ import { TemplateSelector } from './TemplateSelector';
 import { ParamEditor } from './ParamEditor';
 import { ApiUrlBuilder } from './ApiUrlBuilder';
 import { LivePreview } from './LivePreview';
-import { PerformanceMetrics } from './PerformanceMetrics';
-import { RequestLog, LogEntry } from './RequestLog';
 
 interface PlaygroundProps {
     templates: SerializableTemplate[];
@@ -30,19 +28,13 @@ export function Playground({ templates, baseUrl }: PlaygroundProps): React.React
         });
         return initial;
     });
-    const [requestLog, setRequestLog] = useState<LogEntry[]>([]);
-    const [metrics, setMetrics] = useState<{
-        renderTimeMs: string | null;
-        wasmCompileTimeMs: string | null;
-        cacheStatus: 'HIT' | 'MISS' | null;
-    }>({ renderTimeMs: null, wasmCompileTimeMs: null, cacheStatus: null });
+    const [lastRenderTime, setLastRenderTime] = useState<string | null>(null);
 
     const selectedTemplate = useMemo(
         () => templates.find((t) => t.slug === selectedSlug) ?? templates[0],
         [templates, selectedSlug]
     );
 
-    // Compute the live API URL from current state
     const apiUrl = useMemo(() => {
         const url = new URL('/api/og', baseUrl);
         url.searchParams.set('template', selectedSlug);
@@ -57,13 +49,12 @@ export function Playground({ templates, baseUrl }: PlaygroundProps): React.React
             setSelectedSlug(slug);
             const newTemplate = templates.find((t) => t.slug === slug);
             if (!newTemplate) return;
-            // Reset params to new template's defaults
             const defaultParams: Record<string, string> = {};
             newTemplate.fields.forEach((f) => {
                 if (f.defaultValue) defaultParams[f.key] = f.defaultValue;
             });
             setParams(defaultParams);
-            setRequestLog([]);
+            setLastRenderTime(null);
         },
         [templates]
     );
@@ -72,29 +63,9 @@ export function Playground({ templates, baseUrl }: PlaygroundProps): React.React
         setParams((prev) => ({ ...prev, [key]: value }));
     }, []);
 
-    const handleMetrics = useCallback(
-        (incoming: { renderTimeMs: string; wasmCompileTimeMs: string; cacheStatus: 'HIT' | 'MISS' }) => {
-            setMetrics(incoming);
-        },
-        []
-    );
-
-    const handleLogEntry = useCallback(
-        (entry: { url: string; status: number; cacheStatus: string; timeMs: number }) => {
-            const logEntry: LogEntry = {
-                id: crypto.randomUUID(),
-                timestamp: new Date().toLocaleTimeString(),
-                ...entry,
-            };
-            setRequestLog((prev) => [...prev.slice(-49), logEntry]);
-        },
-        []
-    );
-
     return (
         <div className="min-h-screen bg-slate-950 text-white">
             <div className="max-w-screen-xl mx-auto px-6 py-8">
-                {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-2xl font-bold text-white">OG Card Playground</h1>
                     <p className="text-slate-400 mt-1 text-sm">
@@ -118,20 +89,19 @@ export function Playground({ templates, baseUrl }: PlaygroundProps): React.React
                         />
                     </div>
 
-                    {/* Right panel: preview + metrics + log */}
-                    <div className="flex flex-col gap-6">
+                    {/* Right panel: preview + generation time */}
+                    <div className="flex flex-col gap-4">
                         <ApiUrlBuilder url={apiUrl} />
                         <LivePreview
                             apiUrl={apiUrl}
-                            onMetrics={handleMetrics}
-                            onLogEntry={handleLogEntry}
+                            onRenderTime={setLastRenderTime}
                         />
-                        <PerformanceMetrics
-                            renderTimeMs={metrics.renderTimeMs}
-                            wasmCompileTimeMs={metrics.wasmCompileTimeMs}
-                            cacheStatus={metrics.cacheStatus}
-                        />
-                        <RequestLog entries={requestLog} />
+                        {lastRenderTime && (
+                            <p className="text-sm text-slate-400">
+                                Image generated in{' '}
+                                <span className="text-white font-medium">{lastRenderTime}</span>
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

@@ -4,31 +4,29 @@ import React, { useEffect, useState, useRef } from 'react';
 
 interface LivePreviewProps {
     apiUrl: string;
-    onMetrics: (metrics: {
-        renderTimeMs: string;
-        wasmCompileTimeMs: string;
-        cacheStatus: 'HIT' | 'MISS';
-    }) => void;
-    onLogEntry: (entry: { url: string; status: number; cacheStatus: string; timeMs: number }) => void;
+    onRenderTime: (ms: string) => void;
 }
 
 /**
  * Displays a live preview of the generated OG card image.
- * Debounces URL changes by 800ms to avoid hammering the API while typing.
- * After the image loads, performs a HEAD request to retrieve response headers
- * (image load events don't expose headers), then notifies parent with metrics.
+ * Debounces URL changes by 150ms to avoid hammering the API while typing.
+ * After the image loads, performs a HEAD request to read the X-Render-Time
+ * response header (image load events don't expose headers) and reports it
+ * to the parent via onRenderTime.
  *
  * @param apiUrl - The full API URL to preview
- * @param onMetrics - Callback with render time and cache status from response headers
- * @param onLogEntry - Callback to add an entry to the request log
+ * @param onRenderTime - Callback with the server-side generation time string
  */
 export function LivePreview({
     apiUrl,
-    onMetrics,
-    onLogEntry,
+    onRenderTime,
 }: LivePreviewProps): React.ReactElement {
-    const [displayedUrl, setDisplayedUrl] = useState(apiUrl);
-    const [loading, setLoading] = useState(false);
+    // Start empty so the first effect always triggers a real URL change.
+    // If initialized to apiUrl, the effect fires 150ms later with the same
+    // string — React bails out, <img> src never changes, onLoad never fires,
+    // and the spinner gets stuck on first mount.
+    const [displayedUrl, setDisplayedUrl] = useState('');
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -38,7 +36,7 @@ export function LivePreview({
             setLoading(true);
             setError(false);
             setDisplayedUrl(apiUrl);
-        }, 800);
+        }, 150);
 
         return () => {
             if (debounceTimer.current) clearTimeout(debounceTimer.current);
@@ -47,18 +45,12 @@ export function LivePreview({
 
     const handleLoad = async () => {
         setLoading(false);
-        const start = Date.now();
         try {
             const res = await fetch(displayedUrl, { method: 'HEAD' });
-            const timeMs = Date.now() - start;
-            const cacheStatus = (res.headers.get('X-Cache') || 'MISS') as 'HIT' | 'MISS';
-            const renderTimeMs = res.headers.get('X-Render-Time') || '--';
-            const wasmCompileTimeMs = res.headers.get('X-Wasm-Compile-Time') || '--';
-
-            onMetrics({ renderTimeMs, wasmCompileTimeMs, cacheStatus });
-            onLogEntry({ url: displayedUrl, status: res.status, cacheStatus, timeMs });
+            const renderTime = res.headers.get('X-Render-Time');
+            if (renderTime) onRenderTime(renderTime);
         } catch {
-            // Non-fatal: metrics just won't update
+            // Non-fatal: render time just won't update
         }
     };
 
@@ -85,7 +77,7 @@ export function LivePreview({
                     <div className="absolute inset-0 flex items-center justify-center">
                         <p className="text-red-400 text-sm">Failed to load preview</p>
                     </div>
-                ) : (
+                ) : displayedUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                         src={displayedUrl}
@@ -94,7 +86,7 @@ export function LivePreview({
                         onLoad={handleLoad}
                         onError={handleError}
                     />
-                )}
+                ) : null}
             </div>
         </div>
     );
