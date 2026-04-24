@@ -4,7 +4,8 @@ import React from 'react';
 export interface TemplateField {
     key: string;
     label: string;
-    type: 'text' | 'url' | 'number' | 'color';
+    type: 'text' | 'url' | 'number' | 'color' | 'select';
+    options?: string[];
     defaultValue?: string;
     required: boolean;
     description: string;

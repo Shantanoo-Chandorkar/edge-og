@@ -46,12 +46,21 @@ export const productCardTemplate: TemplateDefinition = {
             defaultValue: '$',
         },
         {
+            key: 'stock',
+            label: 'Stock',
+            type: 'select',
+            options: ['In Stock', 'Out of Stock'],
+            required: false,
+            description: 'Product availability shown as a badge next to the price',
+            defaultValue: 'In Stock',
+        },
+        {
             key: 'ctaText',
             label: 'CTA Text',
             type: 'text',
             required: false,
             description: 'Call-to-action text shown in the footer strip',
-            defaultValue: 'Get started today →',
+            defaultValue: 'Get started today',
         },
         {
             key: 'backgroundColor',

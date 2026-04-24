@@ -29,6 +29,33 @@ export function ParamEditor({
                 const value = params[field.key] ?? field.defaultValue ?? '';
                 const isMissingRequired = field.required && !value;
 
+                if (field.type === 'select' && field.options) {
+                    return (
+                        <div key={field.key} className="flex flex-col gap-1">
+                            <label className="text-sm font-medium text-slate-300">
+                                {field.label}
+                                {field.required && (
+                                    <span className="text-red-400 ml-1">*</span>
+                                )}
+                            </label>
+                            {field.description && (
+                                <p className="text-xs text-slate-500">{field.description}</p>
+                            )}
+                            <select
+                                value={value}
+                                onChange={(e) => onChange(field.key, e.target.value)}
+                                className="bg-slate-800 border border-slate-700 text-white text-sm rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            >
+                                {field.options.map((opt) => (
+                                    <option key={opt} value={opt}>
+                                        {opt}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    );
+                }
+
                 return (
                     <Input
                         key={field.key}

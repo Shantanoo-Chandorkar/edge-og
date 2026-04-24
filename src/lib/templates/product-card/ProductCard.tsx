@@ -6,6 +6,7 @@ interface ProductCardProps {
     logoUrl?: string;
     price?: string;
     currency?: string;
+    stock?: string;
     ctaText?: string;
     backgroundColor?: string;
 }
@@ -20,6 +21,7 @@ interface ProductCardProps {
 export function ProductCard(props: ProductCardProps): React.ReactElement {
     const bg = props.backgroundColor || '#ffffff';
     const currency = props.currency || '$';
+    const isOutOfStock = props.stock === 'Out of Stock';
 
     return (
         <div
@@ -79,27 +81,44 @@ export function ProductCard(props: ProductCardProps): React.ReactElement {
                             {props.tagline}
                         </div>
                     )}
-                    {props.price && (
+                    {(props.price || props.stock) && (
                         <div
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '8px',
+                                gap: '16px',
                             }}
                         >
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    backgroundColor: '#0f172a',
-                                    color: '#ffffff',
-                                    borderRadius: '10px',
-                                    padding: '10px 28px',
-                                    fontSize: '32px',
-                                    fontWeight: 700,
-                                }}
-                            >
-                                {currency}{props.price}
-                            </div>
+                            {props.price && (
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        backgroundColor: '#0f172a',
+                                        color: '#ffffff',
+                                        borderRadius: '10px',
+                                        padding: '10px 28px',
+                                        fontSize: '32px',
+                                        fontWeight: 700,
+                                    }}
+                                >
+                                    {currency}{props.price}
+                                </div>
+                            )}
+                            {props.stock && (
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        backgroundColor: isOutOfStock ? '#fee2e2' : '#dcfce7',
+                                        color: isOutOfStock ? '#991b1b' : '#166534',
+                                        borderRadius: '8px',
+                                        padding: '8px 20px',
+                                        fontSize: '22px',
+                                        fontWeight: 600,
+                                    }}
+                                >
+                                    {props.stock}
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
