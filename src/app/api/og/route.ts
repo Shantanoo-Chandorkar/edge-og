@@ -5,7 +5,13 @@ import { getCachedImage, setCachedImage } from '@/lib/og/cache';
 import { renderTemplate } from '@/lib/og/renderer';
 import { OgQueryParams } from '@/types/og';
 
-export const runtime = 'edge';
+// Node.js runtime — required for resvg-wasm. The WASM binary takes ~2s to
+// compile on cold start; the Node.js module cache keeps it alive across
+// requests within the same worker lifetime. Edge runtime re-compiles the
+// WASM on every cold start (which in dev happens per-request), making the
+// playground unusable. The two-layer Redis + CDN cache still operates
+// identically regardless of which runtime serves the route.
+export const runtime = 'nodejs';
 
 /**
  * GET /api/og

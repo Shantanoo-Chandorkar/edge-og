@@ -121,7 +121,7 @@ export function ProfileCard(props: ProfileCardProps): React.ReactElement {
                                 alignItems: 'center',
                             }}
                         >
-                            <span style={{ display: 'flex', color: '#1d9bf0' }}>𝕏</span>
+                            <span style={{ display: 'flex', color: '#1d9bf0' }}>X</span>
                             <span style={{ display: 'flex' }}>@{props.twitterHandle}</span>
                         </div>
                     )}

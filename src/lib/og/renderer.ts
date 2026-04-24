@@ -1,52 +1,53 @@
+import fs from 'fs';
+import path from 'path';
 import satori, { SatoriOptions } from 'satori';
 import { TemplateDefinition } from '@/lib/templates/types';
 
-// Module-level singletons — initialized once per edge worker lifetime
+// Module-level singletons — initialized once per Node.js worker lifetime.
+// In production this means once per serverless function instance; the module
+// cache keeps these alive across requests within the same instance.
 let fontsCache: SatoriOptions['fonts'] | null = null;
 let resvgInitialized = false;
-let wasmCompileTimeOnce = 0;
 
 /**
- * Fetches Inter-Regular and Inter-Bold fonts from the public directory.
- * Memoized — subsequent calls return the cached ArrayBuffers.
+ * Loads Inter-Regular and Inter-Bold from the public/fonts directory using
+ * the Node.js filesystem. Memoized — subsequent calls return the cached buffers.
  *
  * @returns Satori-compatible font definitions
  */
 async function loadFonts(): Promise<SatoriOptions['fonts']> {
     if (fontsCache) return fontsCache;
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-
-    const [regularRes, boldRes] = await Promise.all([
-        fetch(new URL('/fonts/Inter-Regular.woff', baseUrl).toString()),
-        fetch(new URL('/fonts/Inter-Bold.woff', baseUrl).toString()),
-    ]);
-
-    if (!regularRes.ok || !boldRes.ok) {
-        throw new Error('Failed to load Inter fonts from public directory');
-    }
-
-    const [regular, bold] = await Promise.all([
-        regularRes.arrayBuffer(),
-        boldRes.arrayBuffer(),
+    const fontsDir = path.join(process.cwd(), 'public', 'fonts');
+    const [regular, bold, interLatinExt, notoSymbols] = await Promise.all([
+        fs.promises.readFile(path.join(fontsDir, 'Inter-Regular.woff')),
+        fs.promises.readFile(path.join(fontsDir, 'Inter-Bold.woff')),
+        // Extended Latin subset — covers currency symbols (₹, etc.) not in the
+        // base latin woff. Loaded as a fallback under the same 'Inter' family.
+        fs.promises.readFile(path.join(fontsDir, 'Inter-LatinExt.woff')),
+        // Noto Sans Symbols — covers common arrows (→), enclosed alphanumerics,
+        // and other symbols outside all Inter subsets.
+        fs.promises.readFile(path.join(fontsDir, 'NotoSansSymbols.woff')),
     ]);
 
     fontsCache = [
         { name: 'Inter', data: regular, weight: 400, style: 'normal' },
         { name: 'Inter', data: bold, weight: 700, style: 'normal' },
+        { name: 'Inter', data: interLatinExt, weight: 400, style: 'normal' },
+        { name: 'Inter', data: interLatinExt, weight: 700, style: 'normal' },
+        // Named 'Inter' so Satori reaches it when fontFamily: 'Inter' is set
+        // and the glyph is absent from all Inter subsets above.
+        { name: 'Inter', data: notoSymbols, weight: 400, style: 'normal' },
     ];
 
     return fontsCache;
 }
 
 /**
- * Initializes the resvg-wasm module exactly once per edge worker lifetime.
- * Guards against re-initialization with a module-level flag.
- * Measures compile time only on the first call.
- *
- * The WASM binary is served from /public/resvg.wasm so that it is reachable
- * via a plain HTTP fetch — the only approach that works reliably in the Next.js
- * Edge Runtime, where filesystem access and webpack WASM plugins are unavailable.
+ * Initializes the resvg-wasm module exactly once per Node.js worker lifetime.
+ * Reads the WASM binary directly from node_modules via the filesystem —
+ * faster and more reliable than fetching it over HTTP.
+ * Returns the compile duration in ms on the first call, 0 on subsequent calls.
  */
 async function ensureWasmReady(): Promise<number> {
     if (resvgInitialized) return 0;
@@ -54,34 +55,34 @@ async function ensureWasmReady(): Promise<number> {
     const start = Date.now();
     const { initWasm } = await import('@resvg/resvg-wasm');
 
-    // Fetch the WASM binary from the public directory.
-    // The binary is copied there at build time from node_modules so that
-    // the Edge Runtime can reach it via fetch without filesystem access.
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const wasmRes = await fetch(new URL('/resvg.wasm', baseUrl).toString());
+    const wasmPath = path.join(
+        process.cwd(),
+        'node_modules',
+        '@resvg',
+        'resvg-wasm',
+        'index_bg.wasm'
+    );
+    const wasmBuffer = fs.readFileSync(wasmPath);
 
-    if (!wasmRes.ok) {
-        throw new Error(
-            `Failed to fetch /resvg.wasm — HTTP ${wasmRes.status}. ` +
-            'Ensure public/resvg.wasm exists (copy from node_modules/@resvg/resvg-wasm/index_bg.wasm).'
-        );
+    try {
+        await initWasm(wasmBuffer);
+    } catch (error) {
+        // In dev, Next.js HMR resets the module-level flag while the WASM
+        // binary remains initialized in the underlying runtime. Treat
+        // "Already initialized" as success — the module is ready to use.
+        // Any other error is a genuine init failure and must propagate.
+        if (!(error instanceof Error) || !error.message.includes('Already initialized')) {
+            throw error;
+        }
     }
 
-    // Compile the WASM binary from an ArrayBuffer rather than passing the Response
-    // directly. The Edge Runtime's Response class is a different realm from the one
-    // @resvg/resvg-wasm was compiled against, causing an instanceof check to fail.
-    const wasmBuffer = await wasmRes.arrayBuffer();
-    const wasmModule = await WebAssembly.compile(wasmBuffer);
-    await initWasm(wasmModule);
-
     resvgInitialized = true;
-    wasmCompileTimeOnce = Date.now() - start;
-    return wasmCompileTimeOnce;
+    return Date.now() - start;
 }
 
 /**
  * Renders a template to PNG using the Satori + resvg-wasm pipeline.
- * Handles WASM initialization, font loading, SVG generation, and PNG conversion.
+ * WASM and fonts are initialized once and reused across requests.
  *
  * @param template - The template definition to render
  * @param props - Resolved props to pass to the template's render function
