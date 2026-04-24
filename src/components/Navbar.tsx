@@ -18,6 +18,7 @@ export default function Navbar(): React.ReactElement {
     const isHome = pathname === '/';
     const isPlayground = pathname === '/playground';
     const isUseCases = pathname === '/use-cases';
+    const isInspector = pathname === '/og-inspector';
 
     return (
         <nav className="border-b border-slate-800 px-6 py-4">
@@ -37,6 +38,14 @@ export default function Navbar(): React.ReactElement {
                             className="text-slate-400 hover:text-white transition-colors text-sm font-medium px-4 py-2"
                         >
                             Use Cases
+                        </Link>
+                    )}
+                    {!isInspector && (
+                        <Link
+                            href="/og-inspector"
+                            className="text-slate-400 hover:text-white transition-colors text-sm font-medium px-4 py-2"
+                        >
+                            OG Inspector
                         </Link>
                     )}
                     {!isPlayground && (
