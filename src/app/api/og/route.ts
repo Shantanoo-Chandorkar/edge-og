@@ -75,22 +75,14 @@ export async function GET(request: NextRequest): Promise<Response> {
         // Cache read failure is non-fatal — fall through to generation
     }
 
-    // Validate required fields before rendering
-    for (const field of template.fields) {
-        if (field.required && !params[field.key]) {
-            return Response.json(
-                { error: `missing required field: ${field.key}` },
-                { status: 400 }
-            );
-        }
-    }
-
-    // Build resolved props: use param value if present, otherwise field default
+    // Build resolved props from whatever params were provided.
+    // No required-field enforcement and no default-value fallback — an empty or
+    // absent field is intentional. Templates conditionally render each element,
+    // so omitting all fields produces a clean blank background.
     const resolvedProps: Record<string, string> = {};
     for (const field of template.fields) {
-        const value = params[field.key] || field.defaultValue;
-        if (value !== undefined) {
-            resolvedProps[field.key] = value;
+        if (params[field.key] !== undefined) {
+            resolvedProps[field.key] = params[field.key];
         }
     }
 
