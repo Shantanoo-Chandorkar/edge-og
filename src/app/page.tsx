@@ -55,7 +55,7 @@ export default function HomePage(): React.ReactElement {
                         <code className="text-indigo-300 font-mono bg-slate-900 px-1.5 py-0.5 rounded">
                             /api/og
                         </code>{' '}
-                       , a real Edge Function call.
+                      , a real Edge Function call.
                     </p>
                     <div className="w-full max-w-3xl border border-slate-700 rounded-xl overflow-hidden shadow-2xl">
                         {/* eslint-disable-next-line @next/next/no-img-element */}

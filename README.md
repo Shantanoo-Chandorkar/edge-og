@@ -10,7 +10,7 @@ An enterprise-grade, high-performance dynamic image generation engine built with
 
 The **Edge OG Social Card Generator** is a specialized microservice (integrated into Next.js) that transforms React components into high-quality PNG images for social media sharing. Unlike traditional solutions that rely on resource-heavy headless browsers, this project leverages a lightweight, WASM-based pipeline to generate images directly on the Vercel Edge Network or Serverless functions.
 
-It features a built-in **Template Registry**, a **Live Playground** for designers, and a **Two-Layer Caching** strategy to ensure that your social cards are delivered instantly to crawlers from Twitter, LinkedIn, and Facebook.
+It features a built-in **Template Registry**, a **Live Playground** for designers, an **OG Inspector** tool for verifying crawler visibility, and a **Two-Layer Caching** strategy to ensure that your social cards are delivered instantly to crawlers from Twitter, LinkedIn, and Facebook.
 
 ---
 
@@ -79,6 +79,16 @@ UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 npm run dev
 ```
 Navigate to `http://localhost:3000/playground` to start building your cards.
+
+---
+
+## 🔎 OG Inspector
+
+The **OG Inspector** (`/og-inspector`) closes the loop between generating a card and confirming it is actually visible to crawlers.
+
+It fetches the raw HTML of any public URL — exactly as Facebook, Twitter, and LinkedIn do — and extracts every `og:*` and `twitter:*` meta tag found in the initial markup. Results include a live preview of the `og:image` and a full tag table. If no tags are found, it explains why a JavaScript-rendered app (e.g. one using `react-helmet-async` without SSR) will be invisible to crawlers.
+
+**Security:** The endpoint blocks requests to private IP ranges and `localhost` to prevent SSRF. All tag values are returned as parsed JSON — raw HTML is never proxied.
 
 ---
 
