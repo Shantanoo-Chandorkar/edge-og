@@ -49,10 +49,10 @@ export const productCardTemplate: TemplateDefinition = {
             key: 'stock',
             label: 'Stock',
             type: 'select',
-            options: ['In Stock', 'Out of Stock'],
+            options: ['None', 'In Stock', 'Out of Stock'],
             required: false,
             description: 'Product availability shown as a badge next to the price',
-            defaultValue: 'In Stock',
+            defaultValue: 'None',
         },
         {
             key: 'ctaText',

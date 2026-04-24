@@ -21,6 +21,8 @@ interface ProductCardProps {
 export function ProductCard(props: ProductCardProps): React.ReactElement {
     const bg = props.backgroundColor || '#ffffff';
     const currency = props.currency || '$';
+    // "None" is the no-badge sentinel value — treat it the same as absent
+    const showStock = props.stock && props.stock !== 'None';
     const isOutOfStock = props.stock === 'Out of Stock';
 
     return (
@@ -81,7 +83,7 @@ export function ProductCard(props: ProductCardProps): React.ReactElement {
                             {props.tagline}
                         </div>
                     )}
-                    {(props.price || props.stock) && (
+                    {(props.price || showStock) && (
                         <div
                             style={{
                                 display: 'flex',
@@ -104,7 +106,7 @@ export function ProductCard(props: ProductCardProps): React.ReactElement {
                                     {currency}{props.price}
                                 </div>
                             )}
-                            {props.stock && (
+                            {showStock && (
                                 <div
                                     style={{
                                         display: 'flex',
