@@ -2,6 +2,34 @@
 
 import React, { useState } from 'react';
 
+/**
+ * Renders a syntax-highlighted code block with consistent styling.
+ *
+ * @param children - The raw code string to display
+ */
+function TabCodeBlock({ children }: { children: string }): React.ReactElement {
+    return (
+        <pre className="bg-slate-900 border border-slate-700 rounded-xl p-5 text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed">
+            <code>{children}</code>
+        </pre>
+    );
+}
+
+/**
+ * Renders an indigo-tinted callout box used for insight/tip sections.
+ *
+ * @param title - The callout heading
+ * @param children - The callout body content
+ */
+function TabCallout({ title, children }: { title: string; children: React.ReactNode }): React.ReactElement {
+    return (
+        <div className="bg-indigo-950 border border-indigo-800 rounded-xl p-5 flex flex-col gap-2">
+            <h3 className="text-sm font-semibold text-indigo-300">{title}</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">{children}</p>
+        </div>
+    );
+}
+
 interface Tab {
     id: string;
     label: string;
@@ -83,16 +111,14 @@ function BloggingTab(): React.ReactElement {
                     Meta tag in your page&apos;s{' '}
                     <code className="normal-case font-mono text-indigo-300">&lt;head&gt;</code>
                 </h3>
-                <pre className="bg-slate-900 border border-slate-700 rounded-xl p-5 text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed">
-                    <code>{`<meta
+                <TabCodeBlock>{`<meta
   property="og:image"
   content="https://your-edge-og.vercel.app/api/og
     ?template=blog-card
     &title=Understanding+React+State
     &author=John+Doe
     &readTime=5m"
-/>`}</code>
-                </pre>
+/>`}</TabCodeBlock>
             </div>
 
             <div className="bg-slate-900 border border-slate-700 rounded-xl p-5 flex flex-col gap-3">
@@ -106,15 +132,12 @@ function BloggingTab(): React.ReactElement {
                 </ol>
             </div>
 
-            <div className="bg-indigo-950 border border-indigo-800 rounded-xl p-5 flex flex-col gap-2">
-                <h3 className="text-sm font-semibold text-indigo-300">Why this beats static images</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                    A blogging platform with 500 posts would require 500 individually designed
-                    PNGs. With Edge-OG, one JSX template serves all of them. Publish a new
-                    post and its social card exists automatically, no designer intervention,
-                    no repository bloat.
-                </p>
-            </div>
+            <TabCallout title="Why this beats static images">
+                A blogging platform with 500 posts would require 500 individually designed
+                PNGs. With Edge-OG, one JSX template serves all of them. Publish a new
+                post and its social card exists automatically, no designer intervention,
+                no repository bloat.
+            </TabCallout>
         </div>
     );
 }
@@ -140,16 +163,14 @@ function ECommerceTab(): React.ReactElement {
                     Meta tag in your product page&apos;s{' '}
                     <code className="normal-case font-mono text-indigo-300">&lt;head&gt;</code>
                 </h3>
-                <pre className="bg-slate-900 border border-slate-700 rounded-xl p-5 text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed">
-                    <code>{`<meta
+                <TabCodeBlock>{`<meta
   property="og:image"
   content="https://your-edge-og.vercel.app/api/og
     ?template=blog-card
     &title=Mechanical+Keyboard
     &author=\${product.price}
     &tag=In+Stock"
-/>`}</code>
-                </pre>
+/>`}</TabCodeBlock>
             </div>
 
             <div className="bg-slate-900 border border-slate-700 rounded-xl p-5 flex flex-col gap-3">
@@ -162,14 +183,11 @@ function ECommerceTab(): React.ReactElement {
                 </p>
             </div>
 
-            <div className="bg-indigo-950 border border-indigo-800 rounded-xl p-5 flex flex-col gap-2">
-                <h3 className="text-sm font-semibold text-indigo-300">Why this matters for conversions</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                    A product card that shows the real price and live stock status performs
-                    better than a generic brand banner. The link preview becomes a micro
-                    advertisement, dynamically generated, always accurate, zero ongoing effort.
-                </p>
-            </div>
+            <TabCallout title="Why this matters for conversions">
+                A product card that shows the real price and live stock status performs
+                better than a generic brand banner. The link preview becomes a micro
+                advertisement, dynamically generated, always accurate, zero ongoing effort.
+            </TabCallout>
         </div>
     );
 }
@@ -194,16 +212,14 @@ function MonitoringTab(): React.ReactElement {
                 <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">
                     Example: incident summary card
                 </h3>
-                <pre className="bg-slate-900 border border-slate-700 rounded-xl p-5 text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed">
-                    <code>{`<meta
+                <TabCodeBlock>{`<meta
   property="og:image"
   content="https://your-edge-og.vercel.app/api/og
     ?template=blog-card
     &title=POST+%2Fapi%2Fpayments+returned+503
     &author=Incident+%23448
     &tag=Critical"
-/>`}</code>
-                </pre>
+/>`}</TabCodeBlock>
             </div>
 
             <div className="bg-slate-900 border border-slate-700 rounded-xl p-5 flex flex-col gap-3">
@@ -216,18 +232,15 @@ function MonitoringTab(): React.ReactElement {
                 </ol>
             </div>
 
-            <div className="bg-indigo-950 border border-indigo-800 rounded-xl p-5 flex flex-col gap-2">
-                <h3 className="text-sm font-semibold text-indigo-300">Extending with custom templates</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                    This scenario benefits most from a purpose-built template. Register a
-                    new template in <code className="font-mono text-indigo-300">src/lib/templates/registry.ts</code> with
-                    fields like <code className="font-mono text-indigo-300">endpoint</code>,{' '}
-                    <code className="font-mono text-indigo-300">statusCode</code>, and{' '}
-                    <code className="font-mono text-indigo-300">severity</code>. Your JSX
-                    template can apply colour coding, red for 5xx, yellow for 4xx, and
-                    render structured data cleanly without any additional infrastructure.
-                </p>
-            </div>
+            <TabCallout title="Extending with custom templates">
+                This scenario benefits most from a purpose-built template. Register a
+                new template in <code className="font-mono text-indigo-300">src/lib/templates/registry.ts</code> with
+                fields like <code className="font-mono text-indigo-300">endpoint</code>,{' '}
+                <code className="font-mono text-indigo-300">statusCode</code>, and{' '}
+                <code className="font-mono text-indigo-300">severity</code>. Your JSX
+                template can apply colour coding, red for 5xx, yellow for 4xx, and
+                render structured data cleanly without any additional infrastructure.
+            </TabCallout>
         </div>
     );
 }
