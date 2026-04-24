@@ -36,7 +36,7 @@ export function LivePreview({
             setLoading(true);
             setError(false);
             setDisplayedUrl(apiUrl);
-        }, 150);
+        }, 350);
 
         return () => {
             if (debounceTimer.current) clearTimeout(debounceTimer.current);
