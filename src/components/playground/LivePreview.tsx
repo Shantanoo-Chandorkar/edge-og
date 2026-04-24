@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { PANEL_LABEL_CLASS } from './playgroundStyles';
 
 interface LivePreviewProps {
     apiUrl: string;
@@ -61,7 +62,7 @@ export function LivePreview({
 
     return (
         <div className="flex flex-col gap-2">
-            <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+            <label className={PANEL_LABEL_CLASS}>
                 Preview
             </label>
             <div

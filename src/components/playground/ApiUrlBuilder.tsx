@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { PANEL_LABEL_CLASS } from './playgroundStyles';
 
 interface ApiUrlBuilderProps {
     url: string;
@@ -24,7 +25,7 @@ export function ApiUrlBuilder({ url }: ApiUrlBuilderProps): React.ReactElement {
 
     return (
         <div className="flex flex-col gap-2">
-            <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+            <label className={PANEL_LABEL_CLASS}>
                 API URL
             </label>
             <div className="flex gap-2 items-start">

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { SerializableTemplate } from '@/lib/templates/types';
+import { PANEL_LABEL_CLASS } from './playgroundStyles';
 
 interface TemplateSelectorProps {
     templates: SerializableTemplate[];
@@ -24,7 +25,7 @@ export function TemplateSelector({
 }: TemplateSelectorProps): React.ReactElement {
     return (
         <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+            <label className={PANEL_LABEL_CLASS}>
                 Template
             </label>
             <select

@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { SerializableTemplate } from '@/lib/templates/types';
 import { TemplateSelector } from './TemplateSelector';
 import { ParamEditor } from './ParamEditor';
@@ -107,6 +108,7 @@ export function Playground({ templates, baseUrl }: PlaygroundProps): React.React
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

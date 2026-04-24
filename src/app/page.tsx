@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 /**
  * Landing page, demonstrates Edge-OG with a live API call, architecture overview,
@@ -154,13 +155,7 @@ export default function HomePage(): React.ReactElement {
                 </section>
             </main>
 
-            {/* Footer */}
-            <footer className="border-t border-slate-800 px-6 py-8 mt-12">
-                <div className="max-w-screen-xl mx-auto flex justify-between items-center text-sm text-slate-500">
-                    <span>Edge-OG, Dynamic Social Card Generator</span>
-                    <span>Built with Next.js, Satori, resvg-wasm</span>
-                </div>
-            </footer>
+            <Footer />
         </div>
     );
 }
