@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
  */
 export default function HomePage(): React.ReactElement {
     const demoUrl =
-        '/api/og?template=blog-card&title=Edge-OG%3A+Dynamic+OG+Images+at+the+Edge&author=You&tag=Open+Graph&siteUrl=edge-og.vercel.app&accentColor=%236366f1';
+        '/api/og?template=blog-card&title=Edge-OG%3A+Dynamic+Social+Card+Generator&author=You&tag=Open+Graph&siteUrl=edge-og.vercel.app&accentColor=%236366f1';
 
     return (
         <div className="min-h-screen bg-slate-950 text-white">
@@ -19,11 +19,11 @@ export default function HomePage(): React.ReactElement {
                 {/* Hero */}
                 <section className="flex flex-col items-center text-center gap-6">
                     <div className="inline-flex items-center gap-2 bg-indigo-950 border border-indigo-800 rounded-full px-4 py-1.5 text-indigo-300 text-sm">
-                        ⚡ Runs on Vercel Edge Functions
+                        ⚡ Runs on Vercel Serverless Functions
                     </div>
                     <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl">
                         Dynamic OG images,{' '}
-                        <span className="text-indigo-400">generated at the edge</span>
+                        <span className="text-indigo-400">generated on Vercel's serverless platform</span>
                     </h1>
                     <p className="text-xl text-slate-400 max-w-xl">
                         No headless browser. No third-party service. Just a URL, and your social cards
@@ -55,7 +55,7 @@ export default function HomePage(): React.ReactElement {
                         <code className="text-indigo-300 font-mono bg-slate-900 px-1.5 py-0.5 rounded">
                             /api/og
                         </code>{' '}
-                      , a real Edge Function call.
+                      , a real serverless function call.
                     </p>
                     <div className="w-full max-w-3xl border border-slate-700 rounded-xl overflow-hidden shadow-2xl">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -78,7 +78,7 @@ export default function HomePage(): React.ReactElement {
                             { label: 'resvg-wasm', sub: 'SVG → PNG' },
                         ].map((box, i, arr) => (
                             <React.Fragment key={box.label}>
-                                <div className="flex flex-col items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-8 py-6 min-w-[160px] text-center">
+                                <div className="flex flex-col items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-8 py-6 min-w-40 text-center">
                                     <span className="font-semibold text-white">{box.label}</span>
                                     <span className="text-xs text-slate-500">{box.sub}</span>
                                 </div>
@@ -98,17 +98,17 @@ export default function HomePage(): React.ReactElement {
                             {
                                 step: '1',
                                 title: 'Vercel CDN',
-                                desc: 'Cache-Control headers instruct Vercel to serve identical requests globally without hitting the edge function.',
+                                desc: 'Cache-Control headers instruct Vercel to serve identical requests globally without hitting the serverless function.',
                             },
                             {
                                 step: '2',
                                 title: 'Upstash Redis',
-                                desc: 'Edge-compatible Redis stores generated PNGs as base64 with a 48-hour TTL. Cold starts regenerate automatically.',
+                                desc: 'Upstash Redis stores generated PNGs as base64 with a 48-hour TTL. Cold starts regenerate automatically.',
                             },
                             {
                                 step: '3',
                                 title: 'WASM Singleton',
-                                desc: 'resvg-wasm initialises once per edge worker lifetime, subsequent renders skip the 2s compile cost.',
+                                desc: 'resvg-wasm initialises once per serverless worker lifetime, subsequent renders skip the 2s compile cost.',
                             },
                         ].map((layer) => (
                             <div
@@ -133,7 +133,7 @@ export default function HomePage(): React.ReactElement {
                         <code className="text-indigo-300 font-mono bg-slate-900 px-1.5 py-0.5 rounded">
                             {'<meta>'}
                         </code>{' '}
-                        tag to your page. That's it.
+                        tag to your page. That is it.
                     </p>
                     <pre className="bg-slate-900 border border-slate-700 rounded-xl p-6 text-sm font-mono text-slate-300 overflow-x-auto w-full max-w-2xl leading-relaxed">
                         <code>{`<!-- In your <head> -->

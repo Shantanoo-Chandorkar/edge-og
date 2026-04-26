@@ -3,7 +3,7 @@ import { OgQueryParams } from '@/types/og';
 /**
  * Generates a deterministic, collision-resistant cache key from OG query params.
  * Sorts params alphabetically so ?a=1&b=2 and ?b=2&a=1 produce the same key.
- * Uses Web Crypto API (edge-safe, no Node crypto module).
+ * Uses Web Crypto API (available in both Node.js and Edge runtimes).
  *
  * @param params - The OG query params to hash
  * @returns A cache key string in format "og:v1:{sha256hex}"

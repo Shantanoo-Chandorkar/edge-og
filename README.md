@@ -1,6 +1,6 @@
 # Edge OG Social Card Generator
 
-An enterprise-grade, high-performance dynamic image generation engine built with Next.js, Satori, and Resvg-WASM. Designed to run at the edge with sub-second latency and global scalability.
+An enterprise-grade, high-performance dynamic image generation engine built with Next.js, Satori, and Resvg-WASM. Designed to run on Vercel's serverless Node.js runtime with sub-second latency and global CDN distribution.
 
 **Author:** Shantanoo Chandorkar
 
@@ -8,7 +8,7 @@ An enterprise-grade, high-performance dynamic image generation engine built with
 
 ## 📖 Project Description
 
-The **Edge OG Social Card Generator** is a specialized microservice (integrated into Next.js) that transforms React components into high-quality PNG images for social media sharing. Unlike traditional solutions that rely on resource-heavy headless browsers, this project leverages a lightweight, WASM-based pipeline to generate images directly on the Vercel Edge Network or Serverless functions.
+The **Edge OG Social Card Generator** is a specialized microservice (integrated into Next.js) that transforms React components into high-quality PNG images for social media sharing. Unlike traditional solutions that rely on resource-heavy headless browsers, this project leverages a lightweight, WASM-based pipeline to generate images directly on Vercel Serverless functions.
 
 It features a built-in **Template Registry**, a **Live Playground** for designers, an **OG Inspector** tool for verifying crawler visibility, and a **Two-Layer Caching** strategy to ensure that your social cards are delivered instantly to crawlers from Twitter, LinkedIn, and Facebook.
 
@@ -23,15 +23,15 @@ Social engagement depends heavily on rich Open Graph (OG) images. However, creat
 - **Third-Party Services:** Introduce external dependencies, latency, and recurring costs.
 
 ### The Solution
-This project solves the "Dynamic OG" problem by using an **Edge-native rendering pipeline**:
+This project solves the "Dynamic OG" problem by using a **serverless rendering pipeline**:
 1.  **Satori:** Converts React/JSX into SVG by interpreting a subset of CSS.
 2.  **Resvg-WASM:** A high-performance Rust-based SVG renderer compiled to WASM for lightning-fast PNG conversion.
-3.  **Global Distribution:** Runs on Vercel Edge, placing the generation logic as close to the user/crawler as possible.
+3.  **Global Distribution:** Runs on Vercel's serverless infrastructure; generated images are distributed globally via CDN caching, placing cached responses as close to the user/crawler as possible.
 
 ### Pros
 - 🚀 **Extreme Performance:** Renders images in 100-300ms, compared to seconds with headless browsers.
 - 🎨 **Unified DX:** Use the same React components and Tailwind CSS you use for your web app to build your image templates.
-- 📦 **Zero-Infra Scaling:** No need to manage a fleet of browser instances; the infrastructure is handled by the Edge runtime.
+- 📦 **Zero-Infra Scaling:** No need to manage a fleet of browser instances; the infrastructure is handled by Vercel's serverless platform.
 - 🛡️ **Reliable Delivery:** Tiered caching ensures images are served from the CDN whenever possible.
 
 ---
